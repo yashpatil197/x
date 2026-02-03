@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CipherPixel PRO Max | Advanced AI Stealth</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #030712; color: #f9fafb; overflow-x: hidden; }
+        .mono { font-family: 'JetBrains Mono', monospace; }
+        .glass { background: rgba(17, 24, 39, 0.7); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.1); }
+        .gradient-bg { background: radial-gradient(circle at top right, #1e1b4b, #030712); }
+        .btn-primary { background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%); transition: all 0.3s ease; }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 20px -10px #4f46e5; }
+        .hidden-node { display: none; opacity: 0; }
+        .active-node { display: block; opacity: 1; transition: all 0.5s ease; }
+        input[type="range"] { accent-color: #6366f1; }
+    </style>
+</head>
+<body class="gradient-bg min-h-screen">
+
+    <nav class="p-6 flex justify-between items-center max-w-7xl mx-auto">
+        <div class="flex items-center gap-2 cursor-pointer" onclick="resetToHome()">
+            <div class="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center">
+                <i data-lucide="shield-check" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="font-bold tracking-tight text-xl">CipherPixel<span class="text-indigo-500 font-mono">X</span></span>
+        </div>
+        <button id="backBtn" onclick="resetToHome()" class="hidden text-xs font-bold uppercase tracking-widest text-gray-400 hover:text-white flex items-center gap-2">
+            <i data-lucide="home" class="w-4 h-4"></i> Return to Hub
+        </button>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-6 py-10">
+        
+        <div id="homeState" class="max-w-4xl mx-auto py-10">
+            <div class="text-center mb-16">
+                <h1 class="text-6xl font-extrabold mb-4 tracking-tighter">Secure <span class="text-indigo-500">Bitstream</span> Engine</h1>
+                <p class="text-gray-400 max-w-lg mx-auto">Advanced image steganography with AES-256 encryption and localized pixel-scattering algorithms.</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div onclick="showNode('encode')" class="glass p-10 rounded-3xl border border-white/5 hover:border-indigo-500/50 cursor-pointer transition-all group">
+                    <i data-lucide="lock" class="w-12 h-12 text-indigo-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-2xl font-bold mb-2">Secure Encoder</h3>
+                    <p class="text-sm text-gray-500">Encrypt and hide payloads within carrier images.</p>
+                </div>
+                <div onclick="showNode('decode')" class="glass p-10 rounded-3xl border border-white/5 hover:border-purple-500/50 cursor-pointer transition-all group">
+                    <i data-lucide="unlock" class="w-12 h-12 text-purple-500 mb-6 group-hover:scale-110 transition-transform"></i>
+                    <h3 class="text-2xl font-bold mb-2">Secure Decoder</h3>
+                    <p class="text-sm text-gray-500">Extract and decrypt data using a unique security key.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="encodeNode" class="hidden-node max-w-5xl mx-auto grid lg:grid-cols-3 gap-8">
+            <div class="lg:col-span-2 glass p-8 rounded-3xl">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i data-lucide="binary" class="text-indigo-500"></i> Encryption Node</h2>
+                
+                <div class="space-y-6">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Carrier Image</label>
+                            <input type="file" id="upload" onchange="calculateCapacity()" class="w-full text-xs text-gray-400 glass p-2 rounded-xl border border-white/10">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase mb-2">Security Key (AES-256)</label>
+                            <input type="password" id="encodePass" placeholder="Enter key..." class="w-full text-xs glass p-3 rounded-xl border border-white/10 focus:border-indigo-500 outline-none">
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between mb-2">
+                            <label class="block text-[10px] font-bold text-gray-500 uppercase">Payload</label>
+                            <span id="capacityLabel" class="text-[10px] font-mono text-gray-500 tracking-tighter italic">Cap: -- KB</span>
+                        </div>
+                        <textarea id="message" oninput="calculateCapacity()" rows="5" class="w-full glass rounded-2xl p-4 text-sm focus:ring-1 focus:ring-indigo-500 outline-none" placeholder="Enter your secret message..."></textarea>
+                        <div class="w-full bg-gray-900 rounded-full h-1 mt-2">
+                            <div id="capacityBar" class="bg-indigo-600 h-1 rounded-full transition-all" style="width: 0%"></div>
+                        </div>
+                    </div>
+
+                    <button onclick="handleEncode()" class="w-full py-4 btn-primary rounded-2xl font-bold text-sm tracking-wide uppercase">Initialize Stealth Embedding</button>
+                </div>
+            </div>
+
+            <div class="glass p-6 rounded-3xl flex flex-col gap-6">
+                <h3 class="text-xs font-bold text-gray-500 uppercase tracking-widest">System Diagnostics</h3>
+                <div class="space-y-4">
+                    <div class="p-4 bg-white/5 rounded-2xl">
+                        <label class="block text-[10px] font-bold text-indigo-400 mb-2 uppercase">Scatter Level</label>
+                        <input type="range" id="scatterLevel" min="1" max="10" value="1" class="w-full">
+                        <div class="flex justify-between text-[10px] text-gray-500 mt-1">
+                            <span>Sequential</span><span>Randomized</span>
+                        </div>
+                    </div>
+                    <div class="text-[10px] font-mono text-gray-400 space-y-2">
+                        <p class="flex justify-between border-b border-white/5 pb-1"><span>ALG:</span> <span class="text-white">AES-GCM / LSB+</span></p>
+                        <p class="flex justify-between border-b border-white/5 pb-1"><span>STATUS:</span> <span class="text-green-500">LOCAL_ONLY</span></p>
+                        <p class="flex justify-between"><span>EDGE_AI:</span> <span class="text-white text-right">ACTIVE</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="decodeNode" class="hidden-node max-w-2xl mx-auto">
+            <div class="glass p-8 rounded-3xl">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-2"><i data-lucide="unlocked" class="text-purple-500"></i> Decryption Node</h2>
+                <div class="space-y-6">
+                    <input type="file" id="decodeUpload" class="w-full text-xs text-gray-400 glass p-2 rounded-xl border border-white/10">
+                    <input type="password" id="decodePass" placeholder="Security Key (Must match encryption key)" class="w-full text-xs glass p-3 rounded-xl border border-white/10 focus:border-purple-500 outline-none">
+                    <button onclick="handleDecode()" class="w-full py-4 bg-purple-600 hover:bg-purple-500 rounded-2xl font-bold text-sm uppercase transition">Start Bitstream Extraction</button>
+                    <div id="output" class="w-full glass rounded-2xl p-4 text-sm min-h-[120px] border border-dashed border-white/10 flex items-center justify-center text-gray-500 italic break-all">
+                        Payload will appear here...
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <canvas id="mainCanvas" class="hidden"></canvas>
+    </main>
+
+    <script>
+        lucide.createIcons();
+        const canvas = document.getElementById('mainCanvas');
+        const ctx = canvas.getContext('2d');
+
+        // --- UI STATE MANAGEMENT ---
+        function showNode(mode) {
+            document.getElementById('homeState').style.display = 'none';
+            document.getElementById('backBtn').classList.remove('hidden');
+            if(mode === 'encode') document.getElementById('encodeNode').classList.add('active-node');
+            else document.getElementById('decodeNode').classList.add('active-node');
+        }
+
+        function resetToHome() {
+            location.reload(); // Simplest way to clear sensitive buffers
+        }
+
+        // --- CAPACITY CALCULATOR ---
+        function calculateCapacity() {
+            const file = document.getElementById('upload').files[0];
+            const msg = document.getElementById('message').value;
+            const bar = document.getElementById('capacityBar');
+            const label = document.getElementById('capacityLabel');
+
+            if (file) {
+                const img = new Image();
+                img.onload = () => {
+                    const maxChars = Math.floor((img.width * img.height * 3) / 8) - 100;
+                    const percent = (msg.length / maxChars) * 100;
+                    bar.style.width = Math.min(percent, 100) + '%';
+                    bar.style.backgroundColor = percent > 90 ? '#ef4444' : '#4f46e5';
+                    label.innerText = `Limit: ${Math.floor(maxChars/1024)} KB | Used: ${msg.length} B`;
+                };
+                img.src = URL.createObjectURL(file);
+            }
+        }
+
+        // --- CRYPTOGRAPHY LAYER (AES-GCM) ---
+        async function encryptData(text, password) {
+            const encoder = new TextEncoder();
+            const keyMaterial = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveKey"]);
+            const key = await crypto.subtle.deriveKey(
+                { name: "PBKDF2", salt: encoder.encode("salt-yash-patil"), iterations: 100000, hash: "SHA-256" },
+                keyMaterial, { name: "AES-GCM", length: 256 }, false, ["encrypt"]
+            );
+            const iv = crypto.getRandomValues(new Uint8Array(12));
+            const encrypted = await crypto.subtle.encrypt({ name: "AES-GCM", iv }, key, encoder.encode(text));
+            return JSON.stringify({ iv: btoa(String.fromCharCode(...iv)), data: btoa(String.fromCharCode(...new Uint8Array(encrypted))) });
+        }
+
+        async function decryptData(cipherJson, password) {
+            try {
+                const { iv, data } = JSON.parse(cipherJson);
+                const encoder = new TextEncoder();
+                const keyMaterial = await crypto.subtle.importKey("raw", encoder.encode(password), "PBKDF2", false, ["deriveKey"]);
+                const key = await crypto.subtle.deriveKey(
+                    { name: "PBKDF2", salt: encoder.encode("salt-yash-patil"), iterations: 100000, hash: "SHA-256" },
+                    keyMaterial, { name: "AES-GCM", length: 256 }, false, ["decrypt"]
+                );
+                const decrypted = await crypto.subtle.decrypt(
+                    { name: "AES-GCM", iv: Uint8Array.from(atob(iv), c => c.charCodeAt(0)) },
+                    key, Uint8Array.from(atob(data), c => c.charCodeAt(0))
+                );
+                return new TextDecoder().decode(decrypted);
+            } catch (e) { return "ERROR: Invalid Key or Corrupted Data"; }
+        }
+
+        // --- CORE STEGANOGRAPHY LOGIC ---
+        async function handleEncode() {
+            const fileInput = document.getElementById('upload');
+            const pass = document.getElementById('encodePass').value;
+            const message = document.getElementById('message').value;
+            const scatter = parseInt(document.getElementById('scatterLevel').value);
+
+            if (!fileInput.files[0] || !message || !pass) return alert("All fields required.");
+
+            const encryptedPayload = await encryptData(message, pass);
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = () => {
+                    canvas.width = img.width; canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const pixels = imageData.data;
+                    const secret = encryptedPayload + '###END###';
+                    
+                    let bitIndex = 0, charIndex = 0;
+                    // Scrambling logic: using scatter value to skip pixels
+                    for (let i = 0; i < pixels.length && charIndex < secret.length; i += (4 * scatter)) {
+                        let charCode = secret.charCodeAt(charIndex);
+                        let bit = (charCode >> bitIndex) & 1;
+                        pixels[i] = (pixels[i] & 0xFE) | bit;
+                        bitIndex++;
+                        if (bitIndex === 8) { bitIndex = 0; charIndex++; }
+                    }
+                    ctx.putImageData(imageData, 0, 0);
+                    const link = document.createElement('a');
+                    link.download = 'secure_stego.png';
+                    link.href = canvas.toDataURL();
+                    link.click();
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+
+        async function handleDecode() {
+            const fileInput = document.getElementById('decodeUpload');
+            const pass = document.getElementById('decodePass').value;
+            const scatter = parseInt(document.getElementById('scatterLevel').value); // Must match encoder
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const img = new Image();
+                img.onload = async () => {
+                    canvas.width = img.width; canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+                    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                    const pixels = imageData.data;
+                    let extracted = "", charCode = 0, bitIndex = 0;
+
+                    for (let i = 0; i < pixels.length; i += (4 * scatter)) {
+                        let bit = pixels[i] & 1;
+                        charCode |= (bit << bitIndex);
+                        bitIndex++;
+                        if (bitIndex === 8) {
+                            let char = String.fromCharCode(charCode);
+                            extracted += char;
+                            if (extracted.endsWith('###END###')) break;
+                            bitIndex = 0; charCode = 0;
+                        }
+                    }
+                    const cleanCipher = extracted.replace('###END###', '');
+                    const result = await decryptData(cleanCipher, pass);
+                    const out = document.getElementById('output');
+                    out.innerText = result;
+                    out.className = "w-full glass rounded-2xl p-4 text-sm text-indigo-400 font-mono break-all";
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(fileInput.files[0]);
+        }
+    </script>
+</body>
+</html>
